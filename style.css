@@ -35,6 +35,7 @@ nav a:hover {
 /* 히어로 */
 .hero {
   height: 100vh;
+  padding-top: 80px;
   background: linear-gradient(to bottom, #000000aa, #000000aa),
               url("images/project1.jpg") center/cover;
   display: flex;
@@ -138,6 +139,7 @@ select {
 select:hover {
   border-color: #00f7ff;
 }
+
 
 
 
