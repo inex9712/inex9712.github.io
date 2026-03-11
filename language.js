@@ -23,10 +23,8 @@ const translations = {
     modal_feat3: "🌐 다국어 파일명 지원 — UTF-8 강제 적용으로 한/일 파일명 처리",
     modal_feat4: "🛡️ 자가 참조 버그 방지 — 실행 스크립트 자신을 이동 대상에서 제외",
     modal_trouble_title: "트러블슈팅",
-    modal_trouble_desc: "Python 3.14 환경에서 다국어 파일명 처리 시 ASCII Codec 에러 발생 → sys.stdout.reconfigure + 터미널 -X utf8 플래그 조합으로 딥 레벨 해결."
-  },
-
-  ja: {
+    modal_trouble_desc: "Python 3.14 환경에서 다국어 파일명 처리 시 ASCII Codec 에러 발생 → sys.stdout.reconfigure + 터미널 -X utf8 플래그 조합으로 딥 레벨 해결.",
+    modal_code_title: "소스 코드" {
     nav_about: "紹介",
     nav_projects: "プロジェクト",
     nav_contact: "お問い合わせ",
@@ -50,10 +48,8 @@ const translations = {
     modal_feat3: "🌐 多言語ファイル名対応 — UTF-8強制適用で日/韓ファイル名を処理",
     modal_feat4: "🛡️ 自己参照バグ防止 — 実行スクリプト自身を移動対象から除外",
     modal_trouble_title: "トラブルシューティング",
-    modal_trouble_desc: "Python 3.14環境で多言語ファイル名処理時にASCII Codecエラーが発生 → sys.stdout.reconfigure + ターミナル -X utf8フラグの組み合わせでディープレベル解決。"
-  },
-
-  en: {
+    modal_trouble_desc: "Python 3.14環境で多言語ファイル名処理時にASCII Codecエラーが発生 → sys.stdout.reconfigure + ターミナル -X utf8フラグの組み合わせでディープレベル解決。",
+    modal_code_title: "ソースコード" {
     nav_about: "About",
     nav_projects: "Projects",
     nav_contact: "Contact",
@@ -77,9 +73,8 @@ const translations = {
     modal_feat3: "🌐 Multilingual Filename Support — Forced UTF-8 for Korean/Japanese filenames",
     modal_feat4: "🛡️ Self-Reference Bug Prevention — Excludes the running script from being moved",
     modal_trouble_title: "Troubleshooting",
-    modal_trouble_desc: "ASCII Codec error occurred with multilingual filenames in Python 3.14 → resolved at deep level using sys.stdout.reconfigure combined with terminal -X utf8 flag."
-  }
-};
+    modal_trouble_desc: "ASCII Codec error occurred with multilingual filenames in Python 3.14 → resolved at deep level using sys.stdout.reconfigure combined with terminal -X utf8 flag.",
+    modal_code_title: "Source Code"
 
 const languageSelect = document.getElementById("languageSelect");
 
