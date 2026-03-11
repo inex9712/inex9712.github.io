@@ -17,7 +17,6 @@
     <a href="#contact" data-lang="nav_contact">연락처</a>
   </nav>
 
-  <!-- 🔥 언어 선택 -->
   <select id="languageSelect">
     <option value="ko" selected>한국어</option>
     <option value="ja">日本語</option>
@@ -42,7 +41,67 @@
 
 <section id="projects" class="projects">
   <h2 data-lang="projects_title">Projects</h2>
+
+  <div class="project-grid">
+    <!-- AI File Organizer Card -->
+    <div class="project-card" onclick="openModal('ai-organizer')">
+      <div class="project-card-icon">🗂️</div>
+      <h3 class="project-card-title" data-lang="proj1_title">AI Smart File Organizer</h3>
+      <p class="project-card-desc" data-lang="proj1_short">AI가 파일을 자동으로 분류하고 정리하는 Python 툴</p>
+      <div class="project-tags">
+        <span class="tag">Python</span>
+        <span class="tag">Gemini API</span>
+        <span class="tag">pathlib</span>
+      </div>
+      <span class="project-card-more" data-lang="proj1_more">자세히 보기 →</span>
+    </div>
+  </div>
 </section>
+
+<!-- Modal Overlay -->
+<div id="modal-overlay" class="modal-overlay" onclick="closeModal()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+
+    <!-- AI Organizer Modal Content -->
+    <div id="modal-ai-organizer" class="modal-content">
+      <div class="modal-header">
+        <span class="modal-icon">🗂️</span>
+        <div>
+          <h2 class="modal-title" data-lang="proj1_title">AI Smart File Organizer</h2>
+          <div class="modal-tags">
+            <span class="tag">Python</span>
+            <span class="tag">Gemini API</span>
+            <span class="tag">pathlib</span>
+            <span class="tag">shutil</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-section">
+          <h4 data-lang="modal_overview_title">프로젝트 개요</h4>
+          <p data-lang="modal_overview_desc">파일명과 확장자만으로 Gemini 2.5 Flash 모델이 카테고리를 추론하고, 생성 연도/카테고리 2뎁스 구조로 디렉토리를 자동 생성해 파일을 분류하는 Python 자동화 툴입니다.</p>
+        </div>
+
+        <div class="modal-section">
+          <h4 data-lang="modal_features_title">핵심 기능</h4>
+          <ul class="modal-list">
+            <li data-lang="modal_feat1">🤖 AI 메타데이터 추론 — Gemini API로 파일 카테고리 자동 판별</li>
+            <li data-lang="modal_feat2">📁 동적 디렉토리 생성 — 연도 / 카테고리 2뎁스 자동 구조화</li>
+            <li data-lang="modal_feat3">🌐 다국어 파일명 지원 — UTF-8 강제 적용으로 한/일 파일명 처리</li>
+            <li data-lang="modal_feat4">🛡️ 자가 참조 버그 방지 — 실행 스크립트 자신을 이동 대상에서 제외</li>
+          </ul>
+        </div>
+
+        <div class="modal-section">
+          <h4 data-lang="modal_trouble_title">트러블슈팅</h4>
+          <p data-lang="modal_trouble_desc">Python 3.14 환경에서 다국어 파일명 처리 시 ASCII Codec 에러 발생 → sys.stdout.reconfigure + 터미널 -X utf8 플래그 조합으로 딥 레벨 해결.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <section id="contact" class="contact">
   <h2 data-lang="contact_title">Contact</h2>
@@ -57,5 +116,6 @@
 </footer>
 
 <script src="language.js"></script>
+<script src="modal.js"></script>
 </body>
 </html>
