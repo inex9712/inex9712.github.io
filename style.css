@@ -356,6 +356,11 @@ select:hover {
   color: #a8d8a8;
   white-space: pre;
   text-align: left;
+  /* 모바일에서 부모 밖으로 튀어나오지 않도록 */
+  max-width: 100%;
+  box-sizing: border-box;
+  word-break: normal;
+  overflow-wrap: normal;
 }
 
 /* ========================= */
@@ -377,7 +382,7 @@ select:hover {
   }
 
   nav {
-    display: none;   /* 모바일에서는 메뉴 숨김 */
+    display: none;
   }
 
   select {
@@ -391,6 +396,40 @@ select:hover {
 
   .hero p {
     font-size: 16px;
+  }
+
+  /* 모달 모바일 대응 */
+  .modal {
+    max-height: 90vh;
+    border-radius: 14px;
+  }
+
+  .modal-content {
+    padding: 24px 18px 24px;
+  }
+
+  .modal-header {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .modal-title {
+    font-size: 18px;
+  }
+
+  /* 코드블록 모바일: 가로 스크롤 허용, 부모 넘침 방지 */
+  .modal-section {
+    overflow: hidden;
+  }
+
+  .code-block {
+    font-size: 11px;
+    padding: 14px 12px;
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
+    white-space: pre;
+    display: block;
+    width: 100%;
   }
 
 }
