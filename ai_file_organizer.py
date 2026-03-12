@@ -13,7 +13,7 @@ from google import genai # ⬅️ 최신 라이브러리로 변경!
 # ==========================================
 # 1. API 설정
 # ==========================================
-API_KEY = "AIzaSyBpf2uLaBiaPIDJv5uRjISJri8klQlO1Zw"
+API_KEY = "API_KEY ->> ex: AB************ "
 # 최신 구글 GenAI 클라이언트 설정
 client = genai.Client(api_key=API_KEY)
 
@@ -101,4 +101,5 @@ if __name__ == "__main__":
         print(f"📁 '{TARGET_FOLDER}' 폴더를 새로 만들었습니다.")
         print("💡 여기에 정리하고 싶은 파일들을 넣은 뒤, 이 파이썬 스크립트를 한 번 더 실행해주세요!")
     else:
+
         organize_and_move_files()
