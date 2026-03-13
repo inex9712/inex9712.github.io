@@ -364,6 +364,91 @@ select:hover {
 }
 
 /* ========================= */
+/* 🖼️ 스크린샷 placeholder */
+/* ========================= */
+
+.screenshot-placeholder {
+  background: #1a1a1a;
+  border: 2px dashed #2a2a2a;
+  border-radius: 12px;
+  padding: 40px 20px;
+  text-align: center;
+  color: #555;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+}
+
+/* ========================= */
+/* 🪗 아코디언 */
+/* ========================= */
+
+.accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.accordion-item {
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.accordion-btn {
+  width: 100%;
+  background: #1a1a1a;
+  color: #ccc;
+  border: none;
+  padding: 14px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  transition: background 0.2s, color 0.2s;
+  gap: 10px;
+}
+
+.accordion-btn:hover {
+  background: #222;
+  color: #00f7ff;
+}
+
+.accordion-btn.open {
+  color: #00f7ff;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.accordion-arrow {
+  font-size: 11px;
+  transition: transform 0.25s;
+  flex-shrink: 0;
+  color: #555;
+}
+
+.accordion-btn.open .accordion-arrow {
+  transform: rotate(180deg);
+  color: #00f7ff;
+}
+
+.accordion-body {
+  display: none;
+  background: #0f0f0f;
+}
+
+.accordion-body.open {
+  display: block;
+}
+
+.accordion-body .code-block {
+  border-radius: 0;
+  border: none;
+  margin: 0;
+}
+
+/* ========================= */
 /* 📱 모바일 대응 */
 /* ========================= */
 

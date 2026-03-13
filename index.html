@@ -10,13 +10,11 @@
 
 <header>
   <div class="logo">MY PORTFOLIO</div>
-
   <nav>
     <a href="#about" data-lang="nav_about">소개</a>
     <a href="#projects" data-lang="nav_projects">프로젝트</a>
     <a href="#contact" data-lang="nav_contact">연락처</a>
   </nav>
-
   <select id="languageSelect">
     <option value="ko" selected>한국어</option>
     <option value="ja">日本語</option>
@@ -33,17 +31,15 @@
 <section id="about" class="about">
   <div>
     <h2 data-lang="about_title">About Me</h2>
-    <p data-lang="about_desc">
-      Unity 기반 게임 개발자입니다. 3D 액션 게임 제작 경험이 있습니다.
-    </p>
+    <p data-lang="about_desc">Unity 기반 게임 개발자입니다. 3D 액션 게임 제작 경험이 있습니다.</p>
   </div>
 </section>
 
 <section id="projects" class="projects">
   <h2 data-lang="projects_title">Projects</h2>
-
   <div class="project-grid">
-    <!-- AI File Organizer Card -->
+
+    <!-- Card 1: AI File Organizer -->
     <div class="project-card" onclick="openModal('ai-organizer')">
       <div class="project-card-icon">🗂️</div>
       <h3 class="project-card-title" data-lang="proj1_title">AI Smart File Organizer</h3>
@@ -55,15 +51,30 @@
       </div>
       <span class="project-card-more" data-lang="proj1_more">자세히 보기 →</span>
     </div>
+
+    <!-- Card 2: THE ARXHERS -->
+    <div class="project-card" onclick="openModal('arxhers')">
+      <div class="project-card-icon">🏹</div>
+      <h3 class="project-card-title" data-lang="proj2_title">THE ARXHERS</h3>
+      <p class="project-card-desc" data-lang="proj2_short">활을 주력 무기로 한 1vs1 온라인 FPS 게임</p>
+      <div class="project-tags">
+        <span class="tag">Unity</span>
+        <span class="tag">C#</span>
+        <span class="tag">Netcode</span>
+        <span class="tag">Unity Relay</span>
+      </div>
+      <span class="project-card-more" data-lang="proj2_more">자세히 보기 →</span>
+    </div>
+
   </div>
 </section>
 
-<!-- Modal Overlay -->
+<!-- ===== MODAL OVERLAY ===== -->
 <div id="modal-overlay" class="modal-overlay" onclick="closeModal()">
   <div class="modal" onclick="event.stopPropagation()">
     <button class="modal-close" onclick="closeModal()">✕</button>
 
-    <!-- AI Organizer Modal Content -->
+    <!-- ===== MODAL 1: AI File Organizer ===== -->
     <div id="modal-ai-organizer" class="modal-content">
       <div class="modal-header">
         <span class="modal-icon">🗂️</span>
@@ -77,13 +88,11 @@
           </div>
         </div>
       </div>
-
       <div class="modal-body">
         <div class="modal-section">
           <h4 data-lang="modal_overview_title">프로젝트 개요</h4>
           <p data-lang="modal_overview_desc">파일명과 확장자만으로 Gemini 2.5 Flash 모델이 카테고리를 추론하고, 생성 연도/카테고리 2뎁스 구조로 디렉토리를 자동 생성해 파일을 분류하는 Python 자동화 툴입니다.</p>
         </div>
-
         <div class="modal-section">
           <h4 data-lang="modal_features_title">핵심 기능</h4>
           <ul class="modal-list">
@@ -93,12 +102,10 @@
             <li data-lang="modal_feat4">🛡️ 자가 참조 버그 방지 — 실행 스크립트 자신을 이동 대상에서 제외</li>
           </ul>
         </div>
-
         <div class="modal-section">
           <h4 data-lang="modal_trouble_title">트러블슈팅</h4>
           <p data-lang="modal_trouble_desc">Python 3.14 환경에서 다국어 파일명 처리 시 ASCII Codec 에러 발생 → sys.stdout.reconfigure + 터미널 -X utf8 플래그 조합으로 딥 레벨 해결.</p>
         </div>
-
         <div class="modal-section">
           <h4 data-lang="modal_code_title">소스 코드</h4>
           <pre class="code-block"><code>import os, sys
@@ -110,53 +117,343 @@ import shutil, datetime
 from pathlib import Path
 from google import genai
 
-API_KEY = "YOUR_API_KEY"
-client = genai.Client(api_key=API_KEY)
-
+client = genai.Client(api_key="YOUR_API_KEY")
 BASE_DIR = Path(__file__).parent
 TARGET_FOLDER = BASE_DIR / "test_folder"
 
 def get_category_from_ai(file_name, extension):
     if not extension:
         return "기타_확장자없음"
-    prompt = f"""파일명: {file_name}\n확장자: {extension}
-    가장 적절한 폴더 이름 1개만 출력 (특수문자/띄어쓰기 제외)"""
+    prompt = f"파일명: {file_name}\n확장자: {extension}\n폴더 이름 1개만 출력"
     try:
         response = client.models.generate_content(
             model='gemini-2.5-flash', contents=prompt)
-        return response.text.strip().replace("/","_").replace("\\","_")
-    except Exception as e:
-        print(f"AI 오류: {e}")
+        return response.text.strip().replace("/","_")
+    except:
         return "기타_분류실패"
 
 def organize_and_move_files():
-    files = [f for f in TARGET_FOLDER.iterdir() if f.is_file()]
-    if not files:
-        print("⚠️ 정리할 파일이 없습니다!")
-        return
-    for item in files:
-        name = item.name
-        if name == Path(__file__).name:
-            continue  # 자기 자신 제외
+    for item in TARGET_FOLDER.iterdir():
+        if not item.is_file(): continue
+        if item.name == Path(__file__).name: continue  # 자기 자신 제외
         year = datetime.datetime.fromtimestamp(
             item.stat().st_ctime).strftime('%Y년')
-        category = get_category_from_ai(name, item.suffix)
-        dest_dir = BASE_DIR / year / category
-        dest_dir.mkdir(parents=True, exist_ok=True)
-        shutil.move(str(item), str(dest_dir / name))
-        print(f"[{name}] → {year}/{category} ✅")
+        category = get_category_from_ai(item.name, item.suffix)
+        dest = BASE_DIR / year / category
+        dest.mkdir(parents=True, exist_ok=True)
+        shutil.move(str(item), str(dest / item.name))
+        print(f"[{item.name}] → {year}/{category} ✅")
 
 if __name__ == "__main__":
     if not TARGET_FOLDER.exists():
         TARGET_FOLDER.mkdir(parents=True, exist_ok=True)
-        print("📁 test_folder 생성 완료. 파일을 넣고 다시 실행하세요!")
     else:
         organize_and_move_files()</code></pre>
         </div>
       </div>
     </div>
-  </div>
-</div>
+
+    <!-- ===== MODAL 2: THE ARXHERS ===== -->
+    <div id="modal-arxhers" class="modal-content">
+      <div class="modal-header">
+        <span class="modal-icon">🏹</span>
+        <div>
+          <h2 class="modal-title" data-lang="proj2_title">THE ARXHERS</h2>
+          <div class="modal-tags">
+            <span class="tag">Unity</span>
+            <span class="tag">C#</span>
+            <span class="tag">Netcode for GameObjects</span>
+            <span class="tag">Unity Relay</span>
+            <span class="tag">Unity Lobby</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body">
+
+        <!-- 스크린샷 -->
+        <div class="modal-section">
+          <div class="screenshot-placeholder">
+            <span data-lang="proj2_screenshot">📸 스크린샷 준비 중</span>
+          </div>
+        </div>
+
+        <!-- 만들게 된 계기 -->
+        <div class="modal-section">
+          <h4 data-lang="proj2_story_title">만들게 된 계기</h4>
+          <p data-lang="proj2_story_desc">FPS 장르는 총이 주력 무기인 게임이 대부분입니다. 하지만 냉병기 시대에도 활은 가장 보편적인 원거리 무기였습니다. "총이 없어도 FPS가 될 수 있지 않을까?" 라는 아이디어에서 출발해, 활의 차징과 포물선이라는 물리적 특성을 FPS에 접목한 1vs1 대전 게임을 개발하게 되었습니다.</p>
+        </div>
+
+        <!-- 게임 설명 + 기능 -->
+        <div class="modal-section">
+          <h4 data-lang="proj2_features_title">게임 설명 &amp; 핵심 기능</h4>
+          <ul class="modal-list">
+            <li data-lang="proj2_feat1">🏹 차징 발사 시스템 — 마우스를 누르는 시간에 따라 화살 속도 변화 (Lerp 적용)</li>
+            <li data-lang="proj2_feat2">🌀 포물선 물리 — Rigidbody + 중력으로 자연스러운 화살 궤적 구현</li>
+            <li data-lang="proj2_feat3">🎯 부위별 데미지 배율 — 머리 175% / 몸통 100% / 팔다리 60%</li>
+            <li data-lang="proj2_feat4">🌐 온라인 매칭 — Unity Lobby + Relay로 NAT 없이 P2P 매칭</li>
+            <li data-lang="proj2_feat5">💊 힐 아이템 — 15초 쿨타임으로 리스폰되는 회복 아이템</li>
+          </ul>
+        </div>
+
+        <!-- 핵심 알고리즘 -->
+        <div class="modal-section">
+          <h4 data-lang="proj2_algo_title">핵심 알고리즘</h4>
+          <ul class="modal-list">
+            <li data-lang="proj2_algo1">⚡ <strong>차징 보간</strong> — Mathf.Lerp(minSpeed, maxSpeed, chargeRatio)로 최소~최대 속도를 부드럽게 연결</li>
+            <li data-lang="proj2_algo2">🔄 <strong>네트워크 동기화</strong> — 20Hz로 위치/회전 전송 후 Vector3.Lerp로 상대방 캐릭터를 부드럽게 보간</li>
+            <li data-lang="proj2_algo3">📡 <strong>매칭 파이프라인</strong> — Lobby에서 빈 방 탐색 → 없으면 호스트 생성 → Relay JoinCode로 연결</li>
+            <li data-lang="proj2_algo4">🎯 <strong>타격 판정</strong> — ServerRpc로 타격 이벤트 전달 → 피격 클라이언트에서만 데미지 처리</li>
+          </ul>
+        </div>
+
+        <!-- 핵심 코드 아코디언 -->
+        <div class="modal-section">
+          <h4 data-lang="proj2_code_title">핵심 코드</h4>
+          <div class="accordion">
+
+            <div class="accordion-item">
+              <button class="accordion-btn" onclick="toggleAccordion(this)">
+                <span>🏹 BowController.cs — 차징 발사 시스템</span>
+                <span class="accordion-arrow">▼</span>
+              </button>
+              <div class="accordion-body">
+                <pre class="code-block"><code>private void HandleBow()
+{
+    if (Input.GetMouseButtonDown(0))
+    {
+        isCharging = true;
+        chargeTime = 0f;
+    }
+
+    if (Input.GetMouseButton(0) &amp;&amp; isCharging)
+    {
+        chargeTime += Time.deltaTime;
+        chargeTime = Mathf.Clamp(chargeTime, 0f, maxChargeTime);
+    }
+
+    if (Input.GetMouseButtonUp(0) &amp;&amp; isCharging)
+    {
+        Shoot();
+        isCharging = false;
+        chargeTime = 0f;
+    }
+}
+
+private void Shoot()
+{
+    float chargeRatio = chargeTime / maxChargeTime;
+    // 차징 비율에 따라 속도 보간 (최소 ~ 최대)
+    float arrowSpeed = Mathf.Lerp(minArrowSpeed, maxArrowSpeed, chargeRatio);
+
+    Vector3 shootDirection = playerCamera.transform.forward;
+    NetworkArrow networkArrow = GetComponent&lt;NetworkArrow&gt;();
+    if (networkArrow != null)
+        networkArrow.ShootArrowServerRpc(nockingPoint.position, shootDirection, arrowSpeed);
+}
+
+// 차징 비율 반환 (애니메이션, UI에서 활용)
+public float GetChargeRatio() =&gt; isCharging ? chargeTime / maxChargeTime : 0f;</code></pre>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <button class="accordion-btn" onclick="toggleAccordion(this)">
+                <span>🌀 Arrow.cs — 포물선 물리</span>
+                <span class="accordion-arrow">▼</span>
+              </button>
+              <div class="accordion-body">
+                <pre class="code-block"><code>private void Update()
+{
+    if (!isLaunched) return;
+    // 매 프레임 속도 방향으로 화살 회전 → 포물선 시각화
+    if (rb.velocity.sqrMagnitude &gt; 0.1f)
+        transform.rotation = Quaternion.LookRotation(rb.velocity);
+}
+
+public void Launch(Vector3 direction, float speed)
+{
+    isLaunched = true;
+    rb.isKinematic = false;
+    // 초기 velocity 설정 → Rigidbody가 중력을 자동으로 더해 포물선 완성
+    rb.velocity = direction * speed;
+}
+
+private void OnTriggerEnter(Collider other)
+{
+    if (!isLaunched) return;
+    Hitbox hitbox = other.GetComponent&lt;Hitbox&gt;();
+    if (hitbox != null)
+    {
+        NetworkObject netObj = other.GetComponentInParent&lt;NetworkObject&gt;();
+        if (shooterNetworkArrow != null)
+            shooterNetworkArrow.HitPlayerServerRpc(
+                netObj.OwnerClientId, hitbox.GetHitboxTag(), damage);
+    }
+    StickToSurface();
+}
+
+private void StickToSurface()
+{
+    isLaunched = false;
+    rb.isKinematic = true;  // 물리 비활성화 → 꽂힌 위치에 고정
+    rb.velocity = Vector3.zero;
+    Invoke("DestroySelf", 10f);
+}</code></pre>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <button class="accordion-btn" onclick="toggleAccordion(this)">
+                <span>🎯 PlayerHP.cs — 부위별 데미지 배율</span>
+                <span class="accordion-arrow">▼</span>
+              </button>
+              <div class="accordion-body">
+                <pre class="code-block"><code>// 히트박스 태그에 따라 배율 적용
+public void TakeDamage(float baseDamage, string hitboxTag)
+{
+    if (isDead || !isOwner) return;
+
+    float multiplier = GetMultiplier(hitboxTag);
+    float finalDamage = baseDamage * multiplier;
+
+    currentHP -= finalDamage;
+    currentHP = Mathf.Clamp(currentHP, 0f, maxHP);
+    UpdateHPBar();
+
+    if (currentHP &lt;= 0f) Die();
+}
+
+private float GetMultiplier(string hitboxTag)
+{
+    switch (hitboxTag)
+    {
+        case "Head": return headMultiplier;   // 175%
+        case "Body": return bodyMultiplier;   // 100%
+        case "Limb": return limbMultiplier;   // 60%
+        default:     return bodyMultiplier;
+    }
+}
+
+private void UpdateHPBar()
+{
+    if (hpBarImage == null) return;
+    hpBarImage.fillAmount = currentHP / maxHP;
+    // HP 비율에 따라 빨강 ↔ 초록 그라데이션
+    hpBarImage.color = Color.Lerp(Color.red, Color.green, currentHP / maxHP);
+}</code></pre>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <button class="accordion-btn" onclick="toggleAccordion(this)">
+                <span>🔄 NetworkSync.cs — 위치/회전 동기화</span>
+                <span class="accordion-arrow">▼</span>
+              </button>
+              <div class="accordion-body">
+                <pre class="code-block"><code>private void Update()
+{
+    if (IsOwner) HandleSend();     // 내 캐릭터 → 전송
+    else         HandleReceive();  // 상대 캐릭터 → 보간
+}
+
+// 20Hz로 위치/회전 전송
+private void HandleSend()
+{
+    sendTimer += Time.deltaTime;
+    if (sendTimer &lt; sendRate) return;  // sendRate = 0.05f (20Hz)
+    sendTimer = 0f;
+    SubmitPositionServerRpc(
+        playerBody.position,
+        playerBody.eulerAngles.y,
+        playerCamera.localEulerAngles.x);
+}
+
+// 받은 목표값으로 부드럽게 이동 (Lerp 보간)
+private void HandleReceive()
+{
+    playerBody.position = Vector3.Lerp(
+        playerBody.position, targetPosition, lerpSpeed * Time.deltaTime);
+    playerBody.rotation = Quaternion.Lerp(
+        playerBody.rotation,
+        Quaternion.Euler(0f, targetBodyRotY, 0f),
+        lerpSpeed * Time.deltaTime);
+}
+
+[ServerRpc(RequireOwnership = true)]
+private void SubmitPositionServerRpc(Vector3 pos, float bodyY, float camX)
+    =&gt; BroadcastPositionClientRpc(pos, bodyY, camX);  // 서버 → 전체 전파
+
+[ClientRpc]
+private void BroadcastPositionClientRpc(Vector3 pos, float bodyY, float camX)
+{
+    if (IsOwner) return;  // 본인 제외
+    targetPosition = pos;
+    targetBodyRotY  = bodyY;
+    targetCamRotX   = camX;
+}</code></pre>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <button class="accordion-btn" onclick="toggleAccordion(this)">
+                <span>📡 LobbyManager.cs — 자동 매칭 시스템</span>
+                <span class="accordion-arrow">▼</span>
+              </button>
+              <div class="accordion-body">
+                <pre class="code-block"><code>public async void StartMatching()
+{
+    if (IsMatching) return;
+    IsMatching = true;
+
+    // 1. 빈 Lobby 탐색 시도
+    bool joined = await TryJoinExistingLobby();
+
+    // 2. 없으면 내가 호스트로 생성
+    if (!joined) await CreateLobby();
+}
+
+private async Task&lt;bool&gt; TryJoinExistingLobby()
+{
+    try
+    {
+        currentLobby = await LobbyService.Instance.QuickJoinLobbyAsync();
+        // Lobby에 저장된 Relay JoinCode로 접속
+        string relayCode = currentLobby.Data[RELAY_CODE_KEY].Value;
+        await RelayManager.Instance.JoinRelay(relayCode);
+        pollCoroutine = StartCoroutine(PollLobbyStatus());
+        return true;
+    }
+    catch { return false; }
+}
+
+// 1.5초마다 인원 체크 → 2명 차면 게임 시작
+private IEnumerator PollLobbyStatus()
+{
+    while (true)
+    {
+        yield return new WaitForSeconds(1.5f);
+        var task = LobbyService.Instance.GetLobbyAsync(currentLobby.Id);
+        yield return new WaitUntil(() =&gt; task.IsCompleted);
+        currentLobby = task.Result;
+
+        if (currentLobby.Players.Count &gt;= MAX_PLAYERS)
+        {
+            StartGame();
+            yield break;
+        }
+    }
+}</code></pre>
+              </div>
+            </div>
+
+          </div><!-- .accordion -->
+        </div>
+
+      </div><!-- .modal-body -->
+    </div><!-- #modal-arxhers -->
+
+  </div><!-- .modal -->
+</div><!-- .modal-overlay -->
 
 <section id="contact" class="contact">
   <h2 data-lang="contact_title">Contact</h2>
@@ -166,9 +463,7 @@ if __name__ == "__main__":
   <p>Phone②: 080-8062-1141</p>
 </section>
 
-<footer>
-  © 2026 My Portfolio
-</footer>
+<footer>© 2026 My Portfolio</footer>
 
 <script src="language.js"></script>
 <script src="modal.js"></script>
