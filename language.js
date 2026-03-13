@@ -154,6 +154,4 @@ function setLanguage(lang) {
   document.documentElement.lang = lang;
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  setLanguage("ko");
-});
+setLanguage("ko");
